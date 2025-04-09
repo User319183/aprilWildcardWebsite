@@ -1,3 +1,4 @@
+/* Common styles shared across all pages */
 body {
     margin: 0;
     overflow-x: hidden;
@@ -33,6 +34,12 @@ body {
     opacity: 1;
 }
 
+.section-title {
+    font-size: 3rem;
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
 .hero {
     height: 100vh;
     display: flex;
@@ -61,4 +68,35 @@ h1 {
     50% {
         text-shadow: 0 0 50px rgba(255,255,255,0.5);
     }
+}
+
+.feature-card {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    padding: 2rem;
+    backdrop-filter: blur(10px);
+    transition: transform 0.3s;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+}
+
+.planet-card {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    padding: 2rem;
+    height: 100%;
+    backdrop-filter: blur(10px);
+    transition: transform 0.3s;
+}
+
+.planet-card:hover {
+    transform: scale(1.02);
+}
+
+.planet-stats {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    opacity: 0.8;
 }
