@@ -1,0 +1,64 @@
+body {
+    margin: 0;
+    overflow-x: hidden;
+    background: #000;
+    color: #fff;
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+#spaceCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+
+.navbar {
+    background: transparent;
+    padding: 20px 0;
+    position: fixed;
+    width: 100%;
+    z-index: 100;
+}
+
+.nav-links a {
+    color: #fff;
+    text-decoration: none;
+    margin-left: 30px;
+    opacity: 0.7;
+    transition: opacity 0.3s;
+}
+
+.nav-links a:hover {
+    opacity: 1;
+}
+
+.hero {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+h1 {
+    font-size: 5.5rem;
+    margin: 0;
+    background: linear-gradient(120deg, #e0f7ff, #ffffff, #7eb9ff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 0 0 30px rgba(255,255,255,0.3);
+    letter-spacing: 2px;
+    animation: titleGlow 3s ease-in-out infinite;
+}
+
+@keyframes titleGlow {
+    0%, 100% {
+        text-shadow: 0 0 30px rgba(255,255,255,0.3);
+    }
+    50% {
+        text-shadow: 0 0 50px rgba(255,255,255,0.5);
+    }
+}
