@@ -1,14 +1,124 @@
 .planet-card {
-    background: rgba(255, 255, 255, 0.1);
+    background-color: rgba(20, 20, 35, 0.7);
     border-radius: 15px;
-    padding: 2rem;
+    padding: 20px;
     height: 100%;
-    backdrop-filter: blur(10px);
-    transition: transform 0.3s;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .planet-card:hover {
-    transform: scale(1.02);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.planet-preview {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 15px;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.planet-preview canvas {
+    width: 100px !important;
+    height: 100px !important;
+}
+
+.planet-3d-container {
+    width: 100%;
+    height: 300px;
+    background-color: rgba(0, 0, 0, 0.4);
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+}
+
+.model-container {
+    width: 100%;
+    height: 500px;
+    background-color: rgba(0, 0, 0, 0.4);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 30px;
+    position: relative;
+}
+
+#planetInfo {
+    padding: 20px;
+}
+
+.fun-fact {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}
+
+.btn-outline-light:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.modal-content {
+    background-color: rgba(25, 25, 40, 0.95) !important;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.modal-header {
+    border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Interactive hover effects */
+.planet-card h3 {
+    transition: color 0.3s ease;
+}
+
+.planet-card:hover h3 {
+    color: #00bcd4;
+}
+
+/* Animated background for modal */
+.modal-content::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(42, 54, 95, 0.5) 0%, rgba(10, 10, 25, 0.5) 100%);
+    z-index: -1;
+    opacity: 0.6;
+}
+
+/* Home page solar system model styles */
+#solar-system-model {
+    position: relative;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
+}
+
+.planet-card button {
+    margin-top: auto;
+    transition: all 0.3s ease;
+}
+
+.planet-card button:hover {
+    transform: scale(1.1);
+    background-color: rgba(0, 188, 212, 0.3);
+    border-color: #00bcd4;
 }
 
 .planet-stats {
