@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,7 +10,9 @@
     <link href="css/planets.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
+
 <body>
     <nav class="navbar navbar-dark">
         <div class="container">
@@ -25,14 +28,15 @@
     <main class="content">
         <div class="container py-5">
             <h1 class="text-center mb-5">Planet Explorer</h1>
-            
+
             <!-- Planet details modal -->
             <div class="modal fade" id="planetModal" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered modal-lg">
                     <div class="modal-content bg-dark text-white">
                         <div class="modal-header border-0">
                             <h5 class="modal-title" id="planetModalTitle">Planet Details</h5>
-                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <div class="row">
@@ -47,12 +51,12 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="row g-4" id="planetGrid"></div>
         </div>
     </main>
 
     <script src="js/planets.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>
