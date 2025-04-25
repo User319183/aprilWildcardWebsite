@@ -14,21 +14,56 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-dark">
+    <!-- Improved responsive navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container">
             <a class="navbar-brand" href="index.html">STELLAR ODYSSEY</a>
-            <div class="nav-links">
-                <a href="index.html#solar-system">Solar System</a>
-                <a href="planets.html">Planets</a>
-                <a href="missions.html">Missions</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html#solar-system">Solar System</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="planets.html">Planets</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="missions.html">Missions</a>
+                    </li>
+                </ul>
             </div>
         </div>
     </nav>
 
     <main class="content">
-        <div class="container py-5">
-            <h1 class="text-center mb-5">Planet Explorer</h1>
+        <div class="container py-4 py-lg-5">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h1 class="text-center mb-3">Planet Explorer</h1>
+                    <p class="text-center lead d-none d-md-block">Discover the unique features of each planet in our solar system</p>
+                </div>
+            </div>
 
+            <!-- Filter/Search row for mobile and desktop -->
+            <div class="row mb-4">
+                <div class="col-12 col-md-6 offset-md-3">
+                    <div class="input-group">
+                        <span class="input-group-text bg-dark text-white border-secondary">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                            </svg>
+                        </span>
+                        <input type="text" id="planetSearch" class="form-control bg-dark text-white border-secondary" placeholder="Search planets...">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Planet Grid - Now with better responsive behavior -->
+            <div class="row g-4" id="planetGrid"></div>
+            
             <!-- Planet details modal -->
             <div class="modal fade" id="planetModal" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -40,21 +75,38 @@
                         </div>
                         <div class="modal-body">
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-12 col-md-6 mb-4 mb-md-0">
                                     <div id="planetViewer" class="planet-3d-container"></div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-12 col-md-6">
                                     <div id="planetInfo"></div>
                                 </div>
                             </div>
                         </div>
+                        <div class="modal-footer border-0">
+                            <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">Close</button>
+                            <a href="#" id="learnMore" class="btn btn-primary">Learn More</a>
+                        </div>
                     </div>
                 </div>
             </div>
-
-            <div class="row g-4" id="planetGrid"></div>
         </div>
     </main>
+    
+    <!-- Footer section -->
+    <footer class="py-4 bg-dark mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                    <p class="mb-0">&copy; 2025 Stellar Odyssey. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <a href="#" class="text-white me-3">Privacy Policy</a>
+                    <a href="#" class="text-white">Contact Us</a>
+                </div>
+            </div>
+        </div>
+    </footer>
 
     <script src="js/cursor.js"></script>
     <script src="js/planets.js"></script>

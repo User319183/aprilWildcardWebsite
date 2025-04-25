@@ -261,25 +261,47 @@ function createPlanetCards() {
 
 	planets.forEach((planet) => {
 		const card = document.createElement("div");
-		card.className = "col-md-6 col-lg-3";
+		card.className = "col-12 col-sm-6 col-md-4 col-lg-3";
 		card.innerHTML = `
-            <div class="planet-card" data-planet="${planet.name.toLowerCase()}">
+            <div class="planet-card h-100" data-planet="${planet.name.toLowerCase()}">
                 <div class="planet-preview"></div>
-                <h3>${planet.name}</h3>
-                <p>${planet.description}</p>
-                <button class="btn btn-outline-light btn-sm mt-2">Explore</button>
+                <h3 class="mt-3">${planet.name}</h3>
+                <p class="flex-grow-1">${planet.description}</p>
+                <div class="d-grid gap-2 mt-auto">
+                    <button class="btn btn-outline-light btn-sm">Explore</button>
+                </div>
             </div>
         `;
 		planetGrid.appendChild(card);
 
 		// Add click event listener
-		card.querySelector("button").addEventListener("click", () => {
+		card.querySelector('button').addEventListener('click', () => {
 			showPlanetDetails(planet);
 		});
 
 		// Create small preview of planet
-		createPlanetPreview(card.querySelector(".planet-preview"), planet);
+		createPlanetPreview(card.querySelector('.planet-preview'), planet);
 	});
+
+	// Add planet search functionality
+	const searchInput = document.getElementById('planetSearch');
+	if (searchInput) {
+		searchInput.addEventListener('input', function () {
+			const searchTerm = this.value.toLowerCase();
+			const planetCards = document.querySelectorAll('.planet-card');
+
+			planetCards.forEach(card => {
+				const planetName = card.getAttribute('data-planet');
+				const planetText = card.textContent.toLowerCase();
+
+				if (planetName.includes(searchTerm) || planetText.includes(searchTerm)) {
+					card.closest('.col-12').style.display = 'block';
+				} else {
+					card.closest('.col-12').style.display = 'none';
+				}
+			});
+		});
+	}
 }
 
 function createPlanetPreview(container, planetData) {

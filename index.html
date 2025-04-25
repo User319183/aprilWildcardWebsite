@@ -14,40 +14,69 @@
 
 <body>
     <canvas id="spaceCanvas"></canvas>
-    <nav class="navbar navbar-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container">
             <a class="navbar-brand" href="index.html">STELLAR ODYSSEY</a>
-            <div class="nav-links">
-                <a href="#solar-system">Solar System</a>
-                <a href="planets.html">Planets</a>
-                <a href="missions.html">Missions</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#solar-system">Solar System</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="planets.html">Planets</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="missions.html">Missions</a>
+                    </li>
+                </ul>
             </div>
         </div>
     </nav>
+
     <main class="content">
-        <section class="hero">
-            <h1>Explore The Cosmos</h1>
-            <p>Journey through our solar system in 3D</p>
-            <button id="start-journey" class="btn btn-outline-light btn-lg mt-4">Start Journey</button>
+        <!-- Hero section -->
+        <section class="hero container">
+            <div class="row min-vh-100 justify-content-center align-items-center text-center">
+                <div class="col-12 col-lg-10 col-xl-8">
+                    <h1>Explore The Cosmos</h1>
+                    <p class="lead my-4">Journey through our solar system in 3D</p>
+                    <button id="start-journey" class="btn btn-outline-light btn-lg mt-3">Start Journey</button>
+                </div>
+            </div>
         </section>
 
-        <section id="solar-system" class="py-5">
+        <!-- Solar System section -->
+        <section id="solar-system" class="py-5 py-lg-7">
             <div class="container">
-                <h2 class="section-title">Our Solar System</h2>
-                <div class="row g-4">
-                    <div class="col-md-6">
-                        <div class="feature-card">
+                <h2 class="section-title text-center mb-5">Our Solar System</h2>
+                
+                <!-- Feature cards -->
+                <div class="row g-4 mb-5">
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <div class="feature-card h-100">
                             <h3>Interactive 3D Model</h3>
                             <p>Explore our solar system in stunning 3D detail</p>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="feature-card">
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <div class="feature-card h-100">
                             <h3>Real-time Data</h3>
                             <p>Live astronomical data and planet positions</p>
                         </div>
                     </div>
+                    <div class="col-12 col-lg-4">
+                        <div class="feature-card h-100">
+                            <h3>Planet Information</h3>
+                            <p>Detailed facts about each celestial body</p>
+                        </div>
+                    </div>
                 </div>
+                
+                <!-- 3D model container -->
                 <div class="row mt-4">
                     <div class="col-12">
                         <div id="solar-system-model" class="model-container"></div>
@@ -56,6 +85,22 @@
             </div>
         </section>
     </main>
+
+    <!-- Footer section -->
+    <footer class="py-4 bg-dark">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                    <p class="mb-0">&copy; 2025 Stellar Odyssey. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <a href="#" class="text-white me-3">Privacy Policy</a>
+                    <a href="#" class="text-white">Contact Us</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
     <script src="js/cursor.js"></script>
     <script src="js/space.js"></script>
     <script src="js/solar-system.js"></script>
