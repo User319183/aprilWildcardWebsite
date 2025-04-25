@@ -2,13 +2,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Titillium+Web:wght@300;400;600;700&display=swap');
 
 :root {
+    /* Custom color palette */
     --space-black: #050818;
     --space-blue: #0a3d62;
-    --space-purple: #3c0f38;
+    --space-deep-blue: #051e31;
     --space-dark: #050505;
-    --nebula-pink: #ff2d95;
+    --nebula-teal: #00b8d4;
     --nebula-blue: #0ac1de;
-    --nebula-purple: #8a2be2;
+    --nebula-cyan: #18ffff;
     --star-yellow: #ffd700;
     --moon-gray: #c0c0c0;
     --mars-red: #e74c3c;
@@ -19,7 +20,7 @@ body {
     margin: 0;
     overflow-x: hidden;
     background: var(--space-dark);
-    background-image: radial-gradient(circle at 10% 20%, var(--space-purple) 0%, var(--space-black) 90%);
+    background-image: radial-gradient(circle at 10% 20%, var(--space-deep-blue) 0%, var(--space-black) 90%);
     color: #fff;
     font-family: 'Titillium Web', sans-serif;
     line-height: 1.7;
@@ -138,7 +139,7 @@ h1 {
     font-family: 'Orbitron', sans-serif;
     font-size: clamp(2.5rem, 10vw, 5.5rem);
     margin: 0;
-    background: linear-gradient(120deg, #ffffff, var(--nebula-blue), var(--nebula-pink));
+    background: linear-gradient(120deg, #ffffff, var(--nebula-blue), var(--nebula-teal));
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -156,7 +157,7 @@ h1 {
     }
 
     50% {
-        text-shadow: 0 0 50px rgba(10, 193, 222, 0.7), 0 0 25px rgba(255, 45, 149, 0.5);
+        text-shadow: 0 0 50px rgba(10, 193, 222, 0.7), 0 0 25px rgba(0, 184, 212, 0.5);
     }
 }
 
@@ -378,7 +379,7 @@ footer a:hover::after {
 }
 
 .btn-primary {
-    background: linear-gradient(45deg, var(--nebula-purple), var(--nebula-blue));
+    background: linear-gradient(45deg, var(--space-deep-blue), var(--nebula-blue));
     border: 1px solid rgba(10, 193, 222, 0.5);
     color: #fff;
 }
@@ -396,7 +397,7 @@ footer a:hover::after {
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(45deg, var(--nebula-pink), var(--nebula-blue));
+    background: linear-gradient(45deg, var(--nebula-teal), var(--nebula-blue));
     opacity: 0;
     z-index: -1;
     transition: opacity 0.4s ease;
