@@ -3,7 +3,7 @@ class SpaceCursor {
         // Define the custom cursor element
         this.customCursor = document.createElement('div');
         this.customCursor.classList.add('space-cursor');
-        
+
         // Inject CSS styles for the custom cursor
         const style = document.createElement('style');
         style.textContent = `
@@ -60,7 +60,7 @@ class SpaceCursor {
         `;
         document.head.appendChild(style);
         document.body.appendChild(this.customCursor);
-        
+
         // Track mouse movement
         document.addEventListener('mousemove', (event) => {
             if (this.customCursor) {
@@ -68,7 +68,7 @@ class SpaceCursor {
                 this.customCursor.style.top = `${event.clientY}px`;
             }
         });
-        
+
         // Handle cursor state when hovering over interactive elements
         const interactiveElements = document.querySelectorAll('a, button, [role="button"], input, select, label, .clickable');
         interactiveElements.forEach(element => {
