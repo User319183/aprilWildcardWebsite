@@ -192,10 +192,11 @@
     font-size: 1.4rem;
     letter-spacing: 1px;
     text-align: center;
-    background: linear-gradient(to right, #fff, var(--nebula-blue), #fff);
+    background: linear-gradient(135deg, #ffffff 10%, var(--nebula-blue) 50%, var(--nebula-teal) 90%);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
+    text-shadow: 0 0 2px rgba(10, 193, 222, 0.2);
     transition: all 0.3s ease;
 }
 
