@@ -44,34 +44,17 @@
     height: 120px;
     margin-bottom: 20px;
     border-radius: 50%;
-    background-color: rgba(5, 8, 24, 0.7);
     display: flex;
     justify-content: center;
     align-items: center;
     overflow: hidden;
-    box-shadow: 0 0 25px rgba(10, 193, 222, 0.3);
     position: relative;
-}
-
-.planet-preview::after {
-    content: '';
-    position: absolute;
-    width: 130%;
-    height: 130%;
-    background: conic-gradient(from 0deg, transparent 0deg, rgba(10, 193, 222, 0.1) 20deg, transparent 40deg);
-    animation: orbitRotation 10s linear infinite;
-    z-index: -1;
-}
-
-@keyframes orbitRotation {
-    to {
-        transform: rotate(360deg);
-    }
 }
 
 .planet-preview canvas {
     width: 100px !important;
     height: 100px !important;
+    border-radius: 50%;
 }
 
 .planet-3d-container {
