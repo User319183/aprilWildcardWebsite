@@ -32,6 +32,7 @@ body {
     top: 0;
     left: 0;
     z-index: -1;
+    transition: transform 0.3s ease;
 }
 
 .navbar {
@@ -493,4 +494,41 @@ footer a:hover::after {
 
 ::-webkit-scrollbar-thumb:hover {
     background: rgba(10, 193, 222, 0.8);
+}
+
+/* Space transition effect */
+.space-transition {
+    animation: spaceTransition 1.5s forwards;
+    pointer-events: none;
+}
+
+@keyframes spaceTransition {
+    0% {
+        filter: brightness(1);
+    }
+    70% {
+        filter: brightness(1.8);
+    }
+    100% {
+        filter: brightness(2.5);
+    }
+}
+
+/* Final white flash before page transition */
+.space-transition-final {
+    animation: spaceTransitionFinal 0.3s forwards;
+}
+
+@keyframes spaceTransitionFinal {
+    0% {
+        filter: brightness(2.5);
+    }
+    100% {
+        filter: brightness(5);
+    }
+}
+
+.space-transition #spaceCanvas {
+    transition: transform 1.5s ease;
+    transform: scale(1.3);
 }

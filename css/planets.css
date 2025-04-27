@@ -231,7 +231,8 @@
 h1.text-center {
     font-family: 'Orbitron', sans-serif;
     position: relative;
-    display: inline-block;
+    display: block;
+    width: 100%;
     background: linear-gradient(120deg, #ffffff, var(--nebula-blue), var(--nebula-teal));
     -webkit-background-clip: text;
     background-clip: text;
@@ -239,6 +240,7 @@ h1.text-center {
     letter-spacing: 4px;
     text-transform: uppercase;
     margin-bottom: 2rem;
+    text-align: center;
 }
 
 h1.text-center::after {

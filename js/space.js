@@ -24,8 +24,16 @@ class SpaceBackground {
         // Handle window resize
         window.addEventListener('resize', () => this.onWindowResize());
 
+        // Navigation transition state
+        this.isNavigating = false;
+        this.targetUrl = '';
+        this.zoomSpeed = 0;
+
         // Setup the journey button
         this.setupJourneyButton();
+        
+        // Setup navigation links
+        this.setupNavLinks();
 
         this.init();
         this.createStars();
@@ -142,13 +150,9 @@ class SpaceBackground {
         const button = document.getElementById('start-journey');
         if (button) {
             button.addEventListener('click', () => {
-                // Animate to Solar System section
-                document.getElementById('solar-system').scrollIntoView({
-                    behavior: 'smooth'
-                });
-
-                // Visual effect - speed up stars temporarily
-                this.startJourneyEffect();
+                // Navigate to planets page instead of scrolling
+                this.targetUrl = 'planets.html';
+                this.startNavigationTransition();
             });
         }
     }
@@ -188,6 +192,63 @@ class SpaceBackground {
         }
     }
 
+    setupNavLinks() {
+        // Get all navigation links except for anchor links
+        const navLinks = document.querySelectorAll('nav a');
+        
+        navLinks.forEach(link => {
+            if (!link.getAttribute('href').startsWith('#')) {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.targetUrl = link.getAttribute('href');
+                    this.startNavigationTransition();
+                });
+            }
+        });
+    }
+
+    startNavigationTransition() {
+        if (this.isNavigating) return;
+        
+        this.isNavigating = true;
+        this.zoomSpeed = 0;
+        
+        // Intense zoom/warp effect than the journey button
+        const maxZoomSpeed = 0.2;
+        
+        // Zoom animation
+        const zoomInterval = setInterval(() => {
+            this.zoomSpeed += 0.006; // Slower acceleration for longer effect
+            
+            if (this.zoomSpeed >= maxZoomSpeed) {
+                clearInterval(zoomInterval);
+                
+                // Delay before navigating to fully experience the effect
+                setTimeout(() => {
+                    // Class to body that will trigger the final white flash right before navigation
+                    document.body.classList.add('space-transition-final');
+                    
+                    // Navigate after the flash animation has started
+                    setTimeout(() => {
+                        window.location.href = this.targetUrl;
+                    }, 300);
+                }, 800);
+            }
+        }, 16);
+        
+        // Add more shooting stars during transition
+        for (let i = 0; i < 50; i++) {
+            setTimeout(() => {
+                const star = this.createShootingStar();
+                // Make transition shooting stars move faster
+                star.userData.velocity.multiplyScalar(3);
+            }, i * 50);
+        }
+        
+        // Add visual brightness effect to the page
+        document.body.classList.add('space-transition');
+    }
+
     onWindowResize() {
         this.camera.aspect = window.innerWidth / window.innerHeight;
         this.camera.updateProjectionMatrix();
@@ -204,6 +265,12 @@ class SpaceBackground {
         // Subtle camera movement based on mouse position
         this.camera.position.x = this.mouse.xDamped * 2;
         this.camera.position.y = this.mouse.yDamped * 2;
+        
+        // If navigating, zoom the camera forward
+        if (this.isNavigating) {
+            this.camera.position.z -= this.zoomSpeed;
+        }
+        
         this.camera.lookAt(0, 0, 0);
 
         // Star rotation - use variable speed for warp effect
