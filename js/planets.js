@@ -654,7 +654,7 @@ function showPlanetDetails(planet) {
         </div>
         
         <div class="fun-fact">
-            <h5>Fun Fact</h5>
+            <h5>★ FUN FACT</h5>
             <p>${planet.funFact}</p>
         </div>
     `;
