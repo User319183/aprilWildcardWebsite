@@ -10,6 +10,10 @@ const planets = [
 		textureUrl:
 			"https://space-assets-1.cdn.spotlightvisuals.com/mercury-4k.jpg",
 		ring: false,
+        categories: ["rocky"],
+        atmosphere: 0,
+        temperature: "430°C (day) to -180°C (night)",
+        surfaceFeature: "Heavily cratered terrain"
 	},
 	{
 		name: "Venus",
@@ -22,6 +26,10 @@ const planets = [
 		color: 0xe6c35c,
 		textureUrl: "https://space-assets-1.cdn.spotlightvisuals.com/venus-4k.jpg",
 		ring: false,
+        categories: ["rocky"],
+        atmosphere: 90,
+        temperature: "462°C (constantly)",
+        surfaceFeature: "Volcanic plains and highlands"
 	},
 	{
 		name: "Earth",
@@ -34,6 +42,10 @@ const planets = [
 		color: 0x2268b3,
 		textureUrl: "https://space-assets-1.cdn.spotlightvisuals.com/earth-4k.jpg",
 		ring: false,
+        categories: ["rocky"],
+        atmosphere: 70,
+        temperature: "15°C (average)",
+        surfaceFeature: "Oceans, continents, and polar ice caps"
 	},
 	{
 		name: "Mars",
@@ -46,6 +58,10 @@ const planets = [
 		color: 0xc65831,
 		textureUrl: "https://space-assets-1.cdn.spotlightvisuals.com/mars-4k.jpg",
 		ring: false,
+        categories: ["rocky"],
+        atmosphere: 10,
+        temperature: "-63°C (average)",
+        surfaceFeature: "Vast canyons and dusty terrain"
 	},
 	{
 		name: "Jupiter",
@@ -59,6 +75,10 @@ const planets = [
 		textureUrl:
 			"https://space-assets-1.cdn.spotlightvisuals.com/jupiter-4k.jpg",
 		ring: false,
+        categories: ["gas"],
+        atmosphere: 100,
+        temperature: "-145°C (cloud top)",
+        surfaceFeature: "Bands of clouds and the Great Red Spot"
 	},
 	{
 		name: "Saturn",
@@ -71,6 +91,10 @@ const planets = [
 		color: 0xead6b8,
 		textureUrl: "https://space-assets-1.cdn.spotlightvisuals.com/saturn-4k.jpg",
 		ring: true,
+        categories: ["gas", "ring"],
+        atmosphere: 100,
+        temperature: "-178°C (average)",
+        surfaceFeature: "Distinctive ring system with thousands of bands"
 	},
 	{
 		name: "Uranus",
@@ -85,6 +109,10 @@ const planets = [
 		textureUrl: "https://space-assets-1.cdn.spotlightvisuals.com/uranus-4k.jpg",
 		ring: true,
 		tilt: Math.PI / 2, // 90-degree tilt
+        categories: ["ice", "ring"],
+        atmosphere: 95,
+        temperature: "-224°C (average)",
+        surfaceFeature: "Bland blue-green atmosphere with subtle cloud bands"
 	},
 	{
 		name: "Neptune",
@@ -99,6 +127,10 @@ const planets = [
 		textureUrl:
 			"https://space-assets-1.cdn.spotlightvisuals.com/neptune-4k.jpg",
 		ring: false,
+        categories: ["ice"],
+        atmosphere: 95,
+        temperature: "-214°C (average)",
+        surfaceFeature: "Deep blue color with visible storm systems"
 	},
 ];
 
@@ -112,7 +144,12 @@ class PlanetViewer {
 		this.controls = null;
 		this.planet = null;
 		this.ring = null;
+		this.stars = null;
 		this.animationFrameId = null;
+		this.isRotating = true;
+
+		// Add reference to instance
+		this.container.viewer = this;
 
 		this.init();
 	}
@@ -133,6 +170,9 @@ class PlanetViewer {
 		this.renderer.setClearColor(0x000000, 0);
 		this.container.appendChild(this.renderer.domElement);
 
+		// Create starfield background
+		this.createStarfield();
+
 		// Add lighting
 		const ambientLight = new THREE.AmbientLight(0x404040, 2);
 		const directionalLight = new THREE.DirectionalLight(0xffffff, 2);
@@ -145,10 +185,72 @@ class PlanetViewer {
 			this.renderer.domElement
 		);
 		this.controls.enableDamping = true;
-		this.controls.dampingFactor = 0.05;
+		this.dampingFactor = 0.05;
+		this.controls.enableZoom = true;
 
 		// Handle resize
 		window.addEventListener("resize", () => this.onWindowResize());
+        
+		// Setup control buttons
+		this.setupControls();
+	}
+
+	createStarfield() {
+		// Create a starfield background
+		const starGeometry = new THREE.BufferGeometry();
+		const starMaterial = new THREE.PointsMaterial({
+			color: 0xffffff,
+			size: 0.05,
+			transparent: true
+		});
+
+		const starVertices = [];
+		for (let i = 0; i < 1000; i++) {
+			const x = (Math.random() - 0.5) * 100;
+			const y = (Math.random() - 0.5) * 100;
+			const z = (Math.random() - 0.5) * 100;
+			starVertices.push(x, y, z);
+		}
+
+		starGeometry.setAttribute('position', 
+			new THREE.Float32BufferAttribute(starVertices, 3));
+
+		this.stars = new THREE.Points(starGeometry, starMaterial);
+		this.scene.add(this.stars);
+	}
+
+	setupControls() {
+		const rotateToggle = document.getElementById('rotateToggle');
+		const zoomIn = document.getElementById('zoomIn');
+		const zoomOut = document.getElementById('zoomOut');
+		const resetView = document.getElementById('resetView');
+
+		if (rotateToggle) {
+			rotateToggle.addEventListener('click', () => {
+				this.isRotating = !this.isRotating;
+				rotateToggle.classList.toggle('active');
+			});
+		}
+
+		if (zoomIn) {
+			zoomIn.addEventListener('click', () => {
+				this.camera.position.z *= 0.8;
+			});
+		}
+
+		if (zoomOut) {
+			zoomOut.addEventListener('click', () => {
+				this.camera.position.z *= 1.2;
+			});
+		}
+
+		if (resetView) {
+			resetView.addEventListener('click', () => {
+				this.camera.position.set(0, 0, 5);
+				this.camera.lookAt(0, 0, 0);
+				this.controls.reset();
+			});
+		}
 	}
 
 	loadPlanet(planetData) {
@@ -177,6 +279,8 @@ class PlanetViewer {
 				(texture) => {
 					material = new THREE.MeshStandardMaterial({
 						map: texture,
+						roughness: 0.8,
+						metalness: 0.1,
 					});
 					this.planet.material = material;
 				},
@@ -193,10 +297,14 @@ class PlanetViewer {
 			// Temporary material while loading
 			material = new THREE.MeshStandardMaterial({
 				color: planetData.color,
+                roughness: 0.8,
+                metalness: 0.1
 			});
 		} else {
 			material = new THREE.MeshStandardMaterial({
 				color: planetData.color,
+                roughness: 0.8,
+                metalness: 0.1
 			});
 		}
 
@@ -211,35 +319,129 @@ class PlanetViewer {
 		// Add planet to scene
 		this.scene.add(this.planet);
 
+		// Add atmospheric glow effect for planets with atmosphere
+		if (planetData.atmosphere > 0) {
+			this.addAtmosphereGlow(planetData);
+		}
+
 		// Add rings for Saturn and Uranus
 		if (planetData.ring) {
-			const ringGeometry = new THREE.RingGeometry(1.4, 2.5, 64);
-			const ringMaterial = new THREE.MeshBasicMaterial({
-				color: 0xf8e9c8,
-				side: THREE.DoubleSide,
-				transparent: true,
-				opacity: 0.8,
-			});
-			this.ring = new THREE.Mesh(ringGeometry, ringMaterial);
-			this.ring.rotation.x = Math.PI / 2;
-			this.scene.add(this.ring);
-
-			// Apply tilt to ring if planet has tilt
-			if (planetData.tilt) {
-				this.ring.rotation.x += planetData.tilt;
-			}
+            // More detailed ring for Saturn
+            if (planetData.name === "Saturn") {
+                const innerRadius = 1.4;
+                const outerRadius = 2.5;
+                const segments = 64;
+                
+                // Create multiple rings for more detail
+                for (let i = 0; i < 3; i++) {
+                    const ringGeometry = new THREE.RingGeometry(
+                        innerRadius + i * 0.2, 
+                        innerRadius + 0.15 + i * 0.2, 
+                        segments
+                    );
+                    
+                    const ringMaterial = new THREE.MeshBasicMaterial({
+                        color: i === 1 ? 0xd6b879 : 0xf8e9c8,
+                        side: THREE.DoubleSide,
+                        transparent: true,
+                        opacity: 0.7 - i * 0.15
+                    });
+                    
+                    const ring = new THREE.Mesh(ringGeometry, ringMaterial);
+                    ring.rotation.x = Math.PI / 2;
+                    
+                    if (planetData.tilt) {
+                        ring.rotation.x += planetData.tilt;
+                    }
+                    
+                    this.scene.add(ring);
+                }
+                
+                // Wide outer ring
+                const outerRingGeometry = new THREE.RingGeometry(
+                    outerRadius - 0.3, 
+                    outerRadius, 
+                    segments
+                );
+                
+                const outerRingMaterial = new THREE.MeshBasicMaterial({
+                    color: 0xf8e9c8,
+                    side: THREE.DoubleSide,
+                    transparent: true,
+                    opacity: 0.4
+                });
+                
+                this.ring = new THREE.Mesh(outerRingGeometry, outerRingMaterial);
+                this.ring.rotation.x = Math.PI / 2;
+                
+                if (planetData.tilt) {
+                    this.ring.rotation.x += planetData.tilt;
+                }
+                
+                this.scene.add(this.ring);
+            } else {
+                // Regular ring for other planets (like Uranus)
+                const ringGeometry = new THREE.RingGeometry(1.4, 2.0, 64);
+                const ringMaterial = new THREE.MeshBasicMaterial({
+                    color: 0xf8e9c8,
+                    side: THREE.DoubleSide,
+                    transparent: true,
+                    opacity: 0.7
+                });
+                this.ring = new THREE.Mesh(ringGeometry, ringMaterial);
+                this.ring.rotation.x = Math.PI / 2;
+                
+                if (planetData.tilt) {
+                    this.ring.rotation.x += planetData.tilt;
+                }
+                
+                this.scene.add(this.ring);
+            }
 		}
 
 		// Start the animation loop
 		this.animate();
 	}
 
+	addAtmosphereGlow(planetData) {
+        // Adapted atmosphere properties based on the planet type
+        const atmosphereColor = 
+            planetData.categories.includes('rocky') ? 0x6f9eff : 
+            planetData.categories.includes('gas') ? 0xffedbc : 
+            0xadefff; // ice giants
+            
+        const atmosphereSize = 1.05 + (planetData.atmosphere / 100) * 0.12;
+        const atmosphereOpacity = 0.15 + (planetData.atmosphere / 100) * 0.3;
+
+		// A glow effect using a slightly larger sphere with a translucent shader
+		const glowGeometry = new THREE.SphereGeometry(atmosphereSize, 32, 32);
+		const glowMaterial = new THREE.MeshBasicMaterial({
+			color: atmosphereColor,
+			transparent: true,
+			opacity: atmosphereOpacity,
+			side: THREE.BackSide
+		});
+
+		const atmosphereGlow = new THREE.Mesh(glowGeometry, glowMaterial);
+		this.scene.add(atmosphereGlow);
+
+        // For planets with tilt
+        if (planetData.tilt) {
+            atmosphereGlow.rotation.x = planetData.tilt;
+        }
+	}
+
 	animate() {
 		this.animationFrameId = requestAnimationFrame(() => this.animate());
 
-		// Rotate planet
-		if (this.planet) {
+		// Rotate planet if enabled
+		if (this.planet && this.isRotating) {
 			this.planet.rotation.y += 0.005;
+
+            // Rotate stars slowly in the opposite direction for parallax effect
+            if (this.stars) {
+                this.stars.rotation.y -= 0.0005;
+            }
 		}
 
 		this.controls.update();
@@ -259,11 +461,16 @@ class PlanetViewer {
 function createPlanetCards() {
 	const planetGrid = document.getElementById("planetGrid");
 
-	planets.forEach((planet) => {
+	planets.forEach((planet, index) => {
 		const card = document.createElement("div");
-		card.className = "col-12 col-sm-6 col-md-4 col-lg-3";
+		card.className = "col-12 col-sm-6 col-md-4 col-lg-3 planet-card-container";
+        card.style.animationDelay = `${index * 0.1}s`;
+        
+		// Add data attributes for filtering
+		const categoryClasses = planet.categories.join(' ');
+		
 		card.innerHTML = `
-            <div class="planet-card h-100" data-planet="${planet.name.toLowerCase()}">
+            <div class="planet-card h-100" data-planet="${planet.name.toLowerCase()}" data-categories="${categoryClasses}">
                 <div class="planet-preview"></div>
                 <h3 class="mt-3">${planet.name}</h3>
                 <p class="flex-grow-1">${planet.description}</p>
@@ -279,6 +486,13 @@ function createPlanetCards() {
 			showPlanetDetails(planet);
 		});
 
+        // Make entire card clickable
+        card.querySelector('.planet-card').addEventListener('click', (e) => {
+            if (e.target.tagName !== 'BUTTON') {
+                showPlanetDetails(planet);
+            }
+        });
+
 		// Create small preview of planet
 		createPlanetPreview(card.querySelector('.planet-preview'), planet);
 	});
@@ -288,20 +502,27 @@ function createPlanetCards() {
 	if (searchInput) {
 		searchInput.addEventListener('input', function () {
 			const searchTerm = this.value.toLowerCase();
-			const planetCards = document.querySelectorAll('.planet-card');
-
-			planetCards.forEach(card => {
-				const planetName = card.getAttribute('data-planet');
-				const planetText = card.textContent.toLowerCase();
-
-				if (planetName.includes(searchTerm) || planetText.includes(searchTerm)) {
-					card.closest('.col-12').style.display = 'block';
-				} else {
-					card.closest('.col-12').style.display = 'none';
-				}
-			});
+			filterPlanets('search', searchTerm);
 		});
 	}
+    
+    // Add filter buttons functionality
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    if (filterButtons) {
+        filterButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                // Remove active class from all buttons
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                
+                // Add active class to clicked button
+                this.classList.add('active');
+                
+                // Apply filter
+                const filter = this.getAttribute('data-filter');
+                filterPlanets('category', filter);
+            });
+        });
+    }
 }
 
 function createPlanetPreview(container, planetData) {
@@ -320,9 +541,41 @@ function createPlanetPreview(container, planetData) {
 	directionalLight.position.set(5, 3, 5);
 	scene.add(ambientLight, directionalLight);
 
-	// Create planet with basic color (no texture for preview)
+	// Create planet with texture this time
 	const geometry = new THREE.SphereGeometry(0.8, 32, 32);
-	const material = new THREE.MeshStandardMaterial({ color: planetData.color });
+	let material;
+
+	if (planetData.textureUrl) {
+		const textureLoader = new THREE.TextureLoader();
+		textureLoader.load(
+			planetData.textureUrl,
+			(texture) => {
+				material = new THREE.MeshStandardMaterial({
+					map: texture,
+					roughness: 0.8, 
+					metalness: 0.1
+				});
+				planet.material = material;
+			},
+			undefined,
+			() => {
+				material = new THREE.MeshStandardMaterial({
+					color: planetData.color
+				});
+				planet.material = material;
+			}
+		);
+
+		// Temporary material while loading
+		material = new THREE.MeshStandardMaterial({
+			color: planetData.color
+		});
+	} else {
+		material = new THREE.MeshStandardMaterial({
+			color: planetData.color
+		});
+	}
+
 	const planet = new THREE.Mesh(geometry, material);
 	scene.add(planet);
 
@@ -362,15 +615,44 @@ function showPlanetDetails(planet) {
 	// Set modal title
 	document.getElementById("planetModalTitle").textContent = planet.name;
 
-	// Fill planet info
+	// Fill planet info with enhanced data
 	document.getElementById("planetInfo").innerHTML = `
         <h4>${planet.name}</h4>
-        <p>${planet.description}</p>
-        <ul class="list-unstyled">
-            <li><strong>Distance from Sun:</strong> ${planet.distance}</li>
-            <li><strong>Diameter:</strong> ${planet.diameter}</li>
-            <li><strong>Orbital Period:</strong> ${planet.orbitalPeriod}</li>
-        </ul>
+        <p class="planet-description">${planet.description}</p>
+        
+        <div class="planet-stats">
+            <div class="planet-stat-item">
+                <div class="stat-value">${planet.diameter}</div>
+                <div class="stat-label">Diameter</div>
+            </div>
+            <div class="planet-stat-item">
+                <div class="stat-value">${planet.distance}</div>
+                <div class="stat-label">From Sun</div>
+            </div>
+            <div class="planet-stat-item">
+                <div class="stat-value">${planet.orbitalPeriod}</div>
+                <div class="stat-label">Orbit</div>
+            </div>
+            <div class="planet-stat-item">
+                <div class="stat-value">${planet.temperature}</div>
+                <div class="stat-label">Temperature</div>
+            </div>
+        </div>
+        
+        ${planet.atmosphere > 0 ? `
+            <div class="mt-4">
+                <h5>Atmosphere Density</h5>
+                <div class="atmosphere-bar">
+                    <div class="atmosphere-fill" style="width: ${planet.atmosphere}%"></div>
+                </div>
+            </div>
+        ` : ''}
+        
+        <div class="mt-4">
+            <h5>Notable Features</h5>
+            <p>${planet.surfaceFeature}</p>
+        </div>
+        
         <div class="fun-fact">
             <h5>Fun Fact</h5>
             <p>${planet.funFact}</p>
@@ -381,7 +663,22 @@ function showPlanetDetails(planet) {
 	const container = document.getElementById("planetViewer");
 
 	// Clear any existing content
-	container.innerHTML = "";
+	container.innerHTML = `
+        <div class="planet-controls">
+            <button class="planet-control-btn active" id="rotateToggle" title="Toggle Rotation">
+                <i class="fas fa-sync-alt"></i>
+            </button>
+            <button class="planet-control-btn" id="zoomIn" title="Zoom In">
+                <i class="fas fa-search-plus"></i>
+            </button>
+            <button class="planet-control-btn" id="zoomOut" title="Zoom Out">
+                <i class="fas fa-search-minus"></i>
+            </button>
+            <button class="planet-control-btn" id="resetView" title="Reset View">
+                <i class="fas fa-compress-arrows-alt"></i>
+            </button>
+        </div>
+    `;
 
 	// Show the modal
 	const planetModal = document.getElementById("planetModal");
@@ -400,11 +697,77 @@ function showPlanetDetails(planet) {
 
 			// Force a resize to ensure proper rendering
 			viewer.onWindowResize();
+            
+            // Animate atmosphere bar if present
+            const atmosphereFill = document.querySelector('.atmosphere-fill');
+            if (atmosphereFill) {
+                setTimeout(() => {
+                    atmosphereFill.style.width = `${planet.atmosphere}%`;
+                }, 100);
+            }
 		},
 		{ once: true }
 	); // Use once option to ensure this only happens once per modal opening
 
 	modalInstance.show();
+    
+    // Set "Learn More" button href based on planet name
+    document.getElementById('learnMore').href = `https://en.wikipedia.org/wiki/${planet.name}_(planet)`;
 }
 
-document.addEventListener("DOMContentLoaded", createPlanetCards);
+function filterPlanets(filterType, filterValue) {
+    const planetCards = document.querySelectorAll('.planet-card-container');
+    
+    planetCards.forEach(card => {
+        const planetElement = card.querySelector('.planet-card');
+        const planetName = planetElement.getAttribute('data-planet');
+        const planetCategories = planetElement.getAttribute('data-categories');
+        
+        if (filterType === 'search') {
+            // Search filter
+            const planetText = planetElement.textContent.toLowerCase();
+            
+            if (planetName.includes(filterValue) || planetText.includes(filterValue)) {
+                card.style.display = 'block';
+            } else {
+                card.style.display = 'none';
+            }
+        } else if (filterType === 'category') {
+            // Category filter
+            if (filterValue === 'all' || planetCategories.includes(filterValue)) {
+                card.style.display = 'block';
+            } else {
+                card.style.display = 'none';
+            }
+        }
+    });
+}
+
+// Add constellation animation for extra visual interest
+function createConstellation() {
+    const constellations = document.querySelectorAll('.constellation');
+    
+    constellations.forEach(constellation => {
+        // Slowly animate the constellation position for parallax effect
+        let x = 0;
+        let y = 0;
+        const speed = 0.2;
+        
+        function animateConstellation() {
+            x += speed;
+            y += speed / 2;
+            
+            constellation.style.transform = `translate(${Math.sin(x / 50) * 10}px, ${Math.cos(y / 50) * 10}px)`;
+            
+            requestAnimationFrame(animateConstellation);
+        }
+        
+        animateConstellation();
+    });
+}
+
+// Single event listener that calls both functions
+document.addEventListener("DOMContentLoaded", () => {
+    createPlanetCards();
+    createConstellation();
+});
