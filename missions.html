@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Space Missions - Stellar Odyssey</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/planets.css" rel="stylesheet">
+    <link href="css/missions.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+
+<body>
+    <!-- Responsive navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">STELLAR ODYSSEY</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html#solar-system">Solar System</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="planets.html">Planets</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="missions.html">Missions</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="content">
+        <div class="container py-4 py-lg-5">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h1 class="text-center mb-3">Space Exploration Missions</h1>
+                    <p class="text-center lead d-none d-md-block">Discover humanity's most ambitious journeys into the cosmos</p>
+                </div>
+            </div>
+
+            <!-- Mission timeline -->
+            <div class="row mb-5">
+                <div class="col-12">
+                    <div class="timeline-container">
+                        <div class="timeline-line"></div>
+                        
+                        <!-- Timeline filters -->
+                        <div class="timeline-filters text-center mb-5">
+                            <button class="btn btn-outline-light btn-sm me-2 active" data-filter="all">All Missions</button>
+                            <button class="btn btn-outline-light btn-sm me-2" data-filter="moon">Moon</button>
+                            <button class="btn btn-outline-light btn-sm me-2" data-filter="mars">Mars</button>
+                            <button class="btn btn-outline-light btn-sm me-2" data-filter="outer">Outer Planets</button>
+                            <button class="btn btn-outline-light btn-sm" data-filter="upcoming">Upcoming</button>
+                        </div>
+                        
+                        <div class="timeline-items">
+                            <!-- Moon missions -->
+                            <div class="timeline-item" data-category="moon">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-date">1969</div>
+                                <div class="timeline-content">
+                                    <div class="feature-card">
+                                        <h3>Apollo 11</h3>
+                                        <div class="mission-badge moon">Moon Landing</div>
+                                        <p>First crewed mission to land on the Moon, with astronauts Neil Armstrong and Buzz Aldrin taking humanity's first steps on another world.</p>
+                                        <div class="mission-stats">
+                                            <div><strong>Duration:</strong> 8 days</div>
+                                            <div><strong>Distance:</strong> 384,400 km</div>
+                                        </div>
+                                        <button class="btn btn-primary mt-3 mission-details-btn" data-mission="apollo11">Learn More</button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Mars missions -->
+                            <div class="timeline-item" data-category="mars">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-date">2012</div>
+                                <div class="timeline-content">
+                                    <div class="feature-card">
+                                        <h3>Curiosity Rover</h3>
+                                        <div class="mission-badge mars">Mars Exploration</div>
+                                        <p>NASA's car-sized rover designed to explore the Gale Crater on Mars as part of NASA's Mars Science Laboratory mission.</p>
+                                        <div class="mission-stats">
+                                            <div><strong>Status:</strong> Active</div>
+                                            <div><strong>Distance traveled:</strong> 27.84 km</div>
+                                        </div>
+                                        <button class="btn btn-primary mt-3 mission-details-btn" data-mission="curiosity">Learn More</button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Outer planets missions -->
+                            <div class="timeline-item" data-category="outer">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-date">1977</div>
+                                <div class="timeline-content">
+                                    <div class="feature-card">
+                                        <h3>Voyager Missions</h3>
+                                        <div class="mission-badge outer">Interstellar</div>
+                                        <p>Two robotic interstellar probes launched to study the outer planets and beyond. They are now the most distant human-made objects.</p>
+                                        <div class="mission-stats">
+                                            <div><strong>Status:</strong> Active (Interstellar)</div>
+                                            <div><strong>Distance:</strong> 23+ billion km</div>
+                                        </div>
+                                        <button class="btn btn-primary mt-3 mission-details-btn" data-mission="voyager">Learn More</button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Upcoming mission -->
+                            <div class="timeline-item" data-category="upcoming">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-date">2026</div>
+                                <div class="timeline-content">
+                                    <div class="feature-card">
+                                        <h3>Europa Clipper</h3>
+                                        <div class="mission-badge upcoming">Upcoming</div>
+                                        <p>Planned to conduct detailed reconnaissance of Jupiter's moon Europa to determine if it harbors conditions suitable for life.</p>
+                                        <div class="mission-stats">
+                                            <div><strong>Launch Date:</strong> October 2024</div>
+                                            <div><strong>Arrival:</strong> April 2030</div>
+                                        </div>
+                                        <button class="btn btn-primary mt-3 mission-details-btn" data-mission="europa">Learn More</button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Mars mission -->
+                            <div class="timeline-item" data-category="mars">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-date">2021</div>
+                                <div class="timeline-content">
+                                    <div class="feature-card">
+                                        <h3>Perseverance Rover</h3>
+                                        <div class="mission-badge mars">Mars Exploration</div>
+                                        <p>Built to search for signs of ancient microbial life, the rover is collecting samples and testing technologies for future human exploration.</p>
+                                        <div class="mission-stats">
+                                            <div><strong>Status:</strong> Active</div>
+                                            <div><strong>Features:</strong> First helicopter on Mars (Ingenuity)</div>
+                                        </div>
+                                        <button class="btn btn-primary mt-3 mission-details-btn" data-mission="perseverance">Learn More</button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Moon mission -->
+                            <div class="timeline-item" data-category="moon">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-date">2024</div>
+                                <div class="timeline-content">
+                                    <div class="feature-card">
+                                        <h3>Artemis Program</h3>
+                                        <div class="mission-badge moon">Moon Exploration</div>
+                                        <p>NASA's program to return humans to the lunar surface and establish sustainable exploration by the end of the decade.</p>
+                                        <div class="mission-stats">
+                                            <div><strong>Goal:</strong> First woman and next man on Moon</div>
+                                            <div><strong>Status:</strong> In progress</div>
+                                        </div>
+                                        <button class="btn btn-primary mt-3 mission-details-btn" data-mission="artemis">Learn More</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Mission Details Modals -->
+            <div class="modal fade" id="missionModal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-xl">
+                    <div class="modal-content bg-dark text-white">
+                        <div class="modal-header border-0">
+                            <h5 class="modal-title" id="missionModalTitle">Mission Details</h5>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-6 mb-4 mb-md-0">
+                                    <div id="missionViewer" class="mission-3d-container"></div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div id="missionInfo"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer border-0">
+                            <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">Close</button>
+                            <a href="#" id="learnMoreLink" target="_blank" class="btn btn-primary">Official Website</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Subscribe section -->
+    <section class="subscribe-section py-5">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-8 col-lg-6 text-center">
+                    <h3 class="mb-4">Stay Updated on Future Missions</h3>
+                    <p class="mb-4">Subscribe to our newsletter for the latest updates on space exploration missions and discoveries.</p>
+                    <div class="input-group mb-3">
+                        <input type="email" class="form-control" placeholder="Your email address">
+                        <button class="btn btn-primary" type="button">Subscribe</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer section -->
+    <footer class="py-4 bg-dark">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                    <p class="mb-0">&copy; 2025 Stellar Odyssey. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <a href="#" class="text-white me-3">Privacy Policy</a>
+                    <a href="#" class="text-white">Contact Us</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Custom JS -->
+    <script src="js/cursor.js"></script>
+    <script src="js/missions.js"></script>
+</body>
+
+</html>

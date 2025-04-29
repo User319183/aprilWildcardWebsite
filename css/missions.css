@@ -1,0 +1,278 @@
+/* Timeline styling */
+.timeline-container {
+    position: relative;
+    padding: 2rem 0;
+}
+
+.timeline-line {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 2px;
+    background: linear-gradient(to bottom, transparent, var(--nebula-blue), transparent);
+    transform: translateX(-50%);
+    z-index: 1;
+}
+
+.timeline-items {
+    position: relative;
+    z-index: 2;
+}
+
+.timeline-item {
+    display: flex;
+    margin-bottom: 5rem;
+    opacity: 1;
+    transition: all 0.5s ease;
+    position: relative;
+}
+
+.timeline-item:nth-child(odd) {
+    flex-direction: row;
+}
+
+.timeline-item:nth-child(even) {
+    flex-direction: row-reverse;
+}
+
+.timeline-dot {
+    position: absolute;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    background-color: var(--nebula-blue);
+    border-radius: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+    box-shadow: 0 0 15px var(--nebula-blue);
+}
+
+.timeline-date {
+    width: 40%;
+    padding: 0 2rem;
+    text-align: right;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2rem;
+    color: var(--nebula-blue);
+    align-self: center;
+}
+
+.timeline-item:nth-child(even) .timeline-date {
+    text-align: left;
+}
+
+.timeline-content {
+    width: 40%;
+}
+
+/* Filter hiding */
+.timeline-item[data-category].hidden {
+    display: none;
+}
+
+/* Mission badges */
+.mission-badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    letter-spacing: 1px;
+    background: rgba(10, 61, 98, 0.4);
+    border: 1px solid rgba(10, 193, 222, 0.3);
+}
+
+.mission-badge.moon {
+    background: linear-gradient(135deg, rgba(192, 192, 192, 0.2), rgba(192, 192, 192, 0.4));
+    border-color: var(--moon-gray);
+    color: var(--moon-gray);
+}
+
+.mission-badge.mars {
+    background: linear-gradient(135deg, rgba(231, 76, 60, 0.2), rgba(231, 76, 60, 0.4));
+    border-color: var(--mars-red);
+    color: var(--mars-red);
+}
+
+.mission-badge.outer {
+    background: linear-gradient(135deg, rgba(10, 193, 222, 0.2), rgba(10, 193, 222, 0.4));
+    border-color: var(--nebula-blue);
+    color: var(--nebula-blue);
+}
+
+.mission-badge.upcoming {
+    background: linear-gradient(135deg, rgba(233, 180, 76, 0.2), rgba(233, 180, 76, 0.4));
+    border-color: var(--saturn-gold);
+    color: var(--saturn-gold);
+}
+
+/* Mission stats */
+.mission-stats {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(10, 193, 222, 0.2);
+    font-size: 0.9rem;
+}
+
+.mission-stats div {
+    margin-bottom: 0.5rem;
+}
+
+.mission-stats strong {
+    color: var(--nebula-blue);
+}
+
+/* Mission 3D container */
+.mission-3d-container {
+    width: 100%;
+    height: 300px;
+    background: rgba(5, 8, 24, 0.7);
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: inset 0 0 30px rgba(10, 193, 222, 0.2);
+    border: 1px solid rgba(10, 193, 222, 0.2);
+}
+
+/* Timeline filters */
+.timeline-filters button {
+    transition: all 0.3s ease;
+    margin-bottom: 0.5rem;
+}
+
+.timeline-filters button.active {
+    background-color: rgba(10, 193, 222, 0.2);
+    border-color: var(--nebula-blue);
+    color: var(--nebula-blue);
+    box-shadow: 0 0 10px rgba(10, 193, 222, 0.3);
+}
+
+/* Subscribe section */
+.subscribe-section {
+    background: rgba(5, 8, 24, 0.85);
+    border-top: 1px solid rgba(10, 193, 222, 0.2);
+    border-bottom: 1px solid rgba(10, 193, 222, 0.2);
+    position: relative;
+}
+
+.subscribe-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at center, rgba(10, 193, 222, 0.1), transparent 70%);
+    z-index: -1;
+}
+
+.subscribe-section h3 {
+    font-family: 'Orbitron', sans-serif;
+    color: var(--nebula-blue);
+}
+
+/* Responsive styles */
+@media (max-width: 991.98px) {
+    .timeline-line {
+        left: 30px;
+    }
+    
+    .timeline-item:nth-child(odd),
+    .timeline-item:nth-child(even) {
+        flex-direction: column;
+        margin-left: 60px;
+    }
+    
+    .timeline-dot {
+        left: 30px;
+    }
+    
+    .timeline-date {
+        width: 100%;
+        text-align: left;
+        padding: 0 0 1rem 0;
+        font-size: 1.5rem;
+    }
+    
+    .timeline-content {
+        width: 100%;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .timeline-filters {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .timeline-line {
+        left: 20px;
+    }
+    
+    .timeline-item {
+        margin-left: 40px;
+    }
+    
+    .timeline-dot {
+        left: 20px;
+        width: 16px;
+        height: 16px;
+    }
+    
+    .timeline-date {
+        font-size: 1.25rem;
+        margin-left: 10px;
+        padding-left: 10px;
+        position: relative;
+        z-index: 4;
+        background: rgba(5, 8, 24, 0.8);
+        display: inline-block;
+        margin-bottom: 0.5rem;
+        border-left: 3px solid var(--nebula-blue);
+    }
+}
+
+@media (max-width: 575.98px) {
+    .timeline-filters button {
+        font-size: 0.8rem;
+        padding: 0.25rem 0.5rem;
+    }
+    
+    .timeline-item {
+        margin-left: 30px;
+        margin-bottom: 3rem;
+    }
+    
+    .timeline-dot {
+        left: 15px;
+        width: 14px;
+        height: 14px;
+    }
+    
+    .timeline-line {
+        left: 15px;
+    }
+    
+    .timeline-date {
+        font-size: 1.1rem;
+        padding: 0.2rem 0.5rem;
+        margin-bottom: 0.75rem;
+    }
+    
+    .mission-badge {
+        font-size: 0.65rem;
+        padding: 0.1rem 0.4rem;
+    }
+    
+    .feature-card {
+        padding: 1rem;
+    }
+    
+    .feature-card h3 {
+        font-size: 1.25rem;
+    }
+}
