@@ -1,9 +1,8 @@
-// Mission data with information and 3D model configurations
-const missions = {
+const missions = { // Object containing all mission data, accessed by unique keys (apollo11, curiosity, etc.)
     apollo11: {
         name: "Apollo 11",
         description: "Apollo 11 was the spaceflight that first landed humans on the Moon. Commander Neil Armstrong and lunar module pilot Buzz Aldrin formed the American crew that landed the Apollo Lunar Module Eagle on July 20, 1969.",
-        details: [
+        details: [ // Array of strings for structured information display
             "Launch Date: July 16, 1969",
             "Landing Date: July 20, 1969",
             "Return to Earth: July 24, 1969",
@@ -11,8 +10,8 @@ const missions = {
             "First words on the Moon: 'That's one small step for man, one giant leap for mankind.'"
         ],
         funFact: "The Apollo 11 mission achieved its primary objective of landing humans on the Moon and returning them safely to Earth, fulfilling the goal set by President John F. Kennedy in 1961.",
-        modelType: "spacecraft",
-        modelColor: 0xC0C0C0,
+        modelType: "spacecraft", // Used to determine which 3D model to render
+        modelColor: 0xC0C0C0, // Hexadecimal color code for the 3D model (silver)
         website: "https://www.nasa.gov/mission_pages/apollo/apollo-11.html"
     },
     curiosity: {
@@ -93,28 +92,20 @@ const missions = {
 };
 
 // Timeline filtering functionality
-document.addEventListener('DOMContentLoaded', () => {
-    // Initialize space cursor for this page
-    new SpaceCursor();
+document.addEventListener('DOMContentLoaded', () => { // Execute code when DOM is fully loaded
+    new SpaceCursor(); // Initialize custom cursor defined in cursor.js
 
     // Set up timeline filters
-    const filterButtons = document.querySelectorAll('.timeline-filters button');
+    const filterButtons = document.querySelectorAll('.timeline-filters button'); // Select all filter buttons using CSS selector
     const timelineItems = document.querySelectorAll('.timeline-item');
 
     // Event listeners for filter buttons
-    filterButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            // Remove active class from all buttons
-            filterButtons.forEach(btn => btn.classList.remove('active'));
-
-            // Add active class to clicked button
-            button.classList.add('active');
-
-            // Get filter value
-            const filter = button.getAttribute('data-filter');
-
-            // Filter timeline items
-            filterTimelineItems(filter);
+    filterButtons.forEach(button => { // Iterate through each button with forEach
+        button.addEventListener('click', () => { // Add click event listener using arrow function
+            filterButtons.forEach(btn => btn.classList.remove('active')); // Remove active class from all buttons
+            button.classList.add('active'); // Add active class to clicked button
+            const filter = button.getAttribute('data-filter'); // Get filter value from data-filter attribute
+            filterTimelineItems(filter); // Call filter function with selected filter
         });
     });
 
@@ -122,8 +113,9 @@ document.addEventListener('DOMContentLoaded', () => {
     function filterTimelineItems(filter) {
         timelineItems.forEach(item => {
             if (filter === 'all') {
-                item.classList.remove('hidden');
+                item.classList.remove('hidden'); // Show all items when 'all' filter is selected
             } else {
+                // Show items matching filter category, hide others using classList
                 if (item.getAttribute('data-category') === filter) {
                     item.classList.remove('hidden');
                 } else {
@@ -137,99 +129,99 @@ document.addEventListener('DOMContentLoaded', () => {
     const missionButtons = document.querySelectorAll('.mission-details-btn');
     missionButtons.forEach(button => {
         button.addEventListener('click', () => {
-            const missionId = button.getAttribute('data-mission');
-            showMissionDetails(missionId);
+            const missionId = button.getAttribute('data-mission'); // Get mission ID from data attribute
+            showMissionDetails(missionId); // Call function to show mission details
         });
     });
 
-    // Mission 3D Viewer class
+    // Mission 3D Viewer class - Object-oriented approach to manage 3D rendering
     class MissionViewer {
-        constructor(container) {
-            this.container = container;
-            this.scene = null;
-            this.camera = null;
-            this.renderer = null;
-            this.controls = null;
-            this.model = null;
-            this.animationFrameId = null;
+        constructor(container) { // Constructor gets called when we create a new MissionViewer instance
+            this.container = container; // DOM element where the 3D model will be rendered
+            this.scene = null; // Will hold the THREE.js scene
+            this.camera = null; // Will hold the THREE.js camera
+            this.renderer = null; // Will handle rendering the 3D scene
+            this.controls = null; // Will handle user interaction with the 3D model
+            this.model = null; // Will hold the 3D model being displayed
+            this.animationFrameId = null; // Used to track animation frame for cancellation
 
-            this.init();
+            this.init(); // Call initialization method
         }
 
         init() {
-            // Create scene
+            // Create scene - the container for all 3D objects
             this.scene = new THREE.Scene();
 
-            // Set up camera
+            // Set up camera with perspective projection
             const width = this.container.clientWidth;
             const height = this.container.clientHeight;
-            this.camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
-            this.camera.position.z = 10;
+            this.camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000); // (FOV, aspect ratio, near plane, far plane)
+            this.camera.position.z = 10; // Position camera 10 units back on Z axis
 
-            // Set up renderer
+            // Set up WebGL renderer with anti-aliasing and transparency
             this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
             this.renderer.setSize(width, height);
-            this.renderer.setClearColor(0x000000, 0);
-            this.container.appendChild(this.renderer.domElement);
+            this.renderer.setClearColor(0x000000, 0); // Transparent background
+            this.container.appendChild(this.renderer.domElement); // Add canvas to container
 
-            // Add lighting
-            const ambientLight = new THREE.AmbientLight(0x404040, 2);
-            const directionalLight = new THREE.DirectionalLight(0xffffff, 2);
+            // Add lighting to the scene
+            const ambientLight = new THREE.AmbientLight(0x404040, 2); // Soft ambient light
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 2); // Directional light like sunlight
             directionalLight.position.set(5, 3, 5);
             this.scene.add(ambientLight, directionalLight);
 
-            // Set up controls
+            // Set up OrbitControls to allow user interaction (rotation, zoom)
             this.controls = new THREE.OrbitControls(this.camera, this.renderer.domElement);
-            this.controls.enableDamping = true;
+            this.controls.enableDamping = true; // Add inertia to controls
             this.controls.dampingFactor = 0.05;
 
-            // Handle resize
+            // Handle window resize events to maintain proper aspect ratio
             window.addEventListener("resize", () => this.onWindowResize());
         }
 
         loadModel(missionData) {
-            // Clear previous model if exists
+            // Clear previous model if exists to prevent memory leaks
             if (this.model) {
                 this.scene.remove(this.model);
             }
 
-            // Cancel previous animation if running
+            // Cancel previous animation if running to prevent multiple animation loops
             if (this.animationFrameId) {
                 cancelAnimationFrame(this.animationFrameId);
             }
 
-            // Simple model based on mission type
+            // Simple model based on mission type - use switch statement to handle different model types
             let geometry;
 
             switch (missionData.modelType) {
                 case 'spacecraft':
-                    // Create a simple spacecraft model
+                    // Create a simple spacecraft model using THREE.js geometric primitives
                     const mainBody = new THREE.CylinderGeometry(1, 1, 3, 16);
                     const cone = new THREE.ConeGeometry(1, 1.5, 16);
                     const solarPanel1 = new THREE.BoxGeometry(6, 0.1, 2);
                     const solarPanel2 = new THREE.BoxGeometry(6, 0.1, 2);
 
-                    // Create meshes
+                    // Create meshes by combining geometries with materials
                     const mainBodyMesh = new THREE.Mesh(mainBody, new THREE.MeshStandardMaterial({ color: missionData.modelColor }));
                     mainBodyMesh.position.y = 0;
 
                     const coneMesh = new THREE.Mesh(cone, new THREE.MeshStandardMaterial({ color: missionData.modelColor }));
-                    coneMesh.position.y = 2.25;
+                    coneMesh.position.y = 2.25; // Position cone at top of cylinder
 
                     const solarPanel1Mesh = new THREE.Mesh(solarPanel1, new THREE.MeshStandardMaterial({ color: 0x1a5fb4 }));
-                    solarPanel1Mesh.position.x = 3.5;
+                    solarPanel1Mesh.position.x = 3.5; // Position solar panel to the right
 
                     const solarPanel2Mesh = new THREE.Mesh(solarPanel2, new THREE.MeshStandardMaterial({ color: 0x1a5fb4 }));
-                    solarPanel2Mesh.position.x = -3.5;
+                    solarPanel2Mesh.position.x = -3.5; // Position solar panel to the left
 
-                    // Create group and add all meshes
+                    // Create group to combine all meshes into a single object that can be transformed together
                     this.model = new THREE.Group();
                     this.model.add(mainBodyMesh);
                     this.model.add(coneMesh);
                     this.model.add(solarPanel1Mesh);
                     this.model.add(solarPanel2Mesh);
 
-                    // Position camera
+                    // Position camera to see the entire model
                     this.camera.position.set(0, 0, 15);
                     break;
 
@@ -318,23 +310,25 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         animate() {
-            this.animationFrameId = requestAnimationFrame(() => this.animate());
+            // requestAnimationFrame creates a smooth animation loop that syncs with display refresh rate
+            this.animationFrameId = requestAnimationFrame(() => this.animate()); // Arrow function preserves 'this' context
 
-            // Rotate model
+            // Rotate model slowly on y-axis to show all sides
             if (this.model) {
                 this.model.rotation.y += 0.005;
             }
 
-            this.controls.update();
-            this.renderer.render(this.scene, this.camera);
+            this.controls.update(); // Update orbit controls
+            this.renderer.render(this.scene, this.camera); // Render the scene
         }
 
         onWindowResize() {
+            // Adjust camera and renderer when window size changes
             const width = this.container.clientWidth;
             const height = this.container.clientHeight;
 
             this.camera.aspect = width / height;
-            this.camera.updateProjectionMatrix();
+            this.camera.updateProjectionMatrix(); // Must call after changing projection parameters
             this.renderer.setSize(width, height);
         }
     }
@@ -343,29 +337,27 @@ document.addEventListener('DOMContentLoaded', () => {
     function showMissionDetails(missionId) {
         const mission = missions[missionId];
 
-        if (!mission) return;
+        if (!mission) return; // Guard clause: exit if mission not found
 
-        // Set modal title
         document.getElementById('missionModalTitle').textContent = mission.name;
 
-        // Fill mission info
+        // Fill mission info using template literal (backtick syntax) for multiline HTML generation
         const infoHtml = `
             <h4>${mission.name}</h4>
             <p>${mission.description}</p>
             <ul class="list-unstyled">
-                ${mission.details.map(detail => `<li>${detail}</li>`).join('')}
+                ${mission.details.map(detail => `<li>${detail}</li>`).join('')} <!-- Array.map to transform array items into HTML list items -->
             </ul>
             <div class="fun-fact">
                 <h5>Mission Highlight</h5>
                 <p>${mission.funFact}</p>
             </div>
         `;
-        document.getElementById('missionInfo').innerHTML = infoHtml;
+        document.getElementById('missionInfo').innerHTML = infoHtml; // Set inner HTML of element
 
-        // Set website link
         document.getElementById('learnMoreLink').href = mission.website;
 
-        // Display the modal
+        // Display the modal using Bootstrap's Modal API
         const missionModal = document.getElementById('missionModal');
         const modalInstance = new bootstrap.Modal(missionModal);
 
@@ -373,43 +365,41 @@ document.addEventListener('DOMContentLoaded', () => {
         missionModal.addEventListener('shown.bs.modal', function () {
             const container = document.getElementById('missionViewer');
 
-            // Clear any existing content
-            container.innerHTML = '';
+            container.innerHTML = ''; // Clear any existing content
 
-            // Initialize new viewer with the selected mission
+            // Initialize new viewer with the selected mission when modal is visible
             const viewer = new MissionViewer(container);
             viewer.loadModel(mission);
 
-            // Force a resize to ensure proper rendering
-            viewer.onWindowResize();
-        }, { once: true });
+            viewer.onWindowResize(); // Force a resize to ensure proper rendering
+        }, { once: true }); // Use once: true to ensure event listener only fires once
 
-        modalInstance.show();
+        modalInstance.show(); // Show the modal
     }
 
-    // Add scroll animation for timeline items
+    // Add scroll animation for timeline items using Intersection Observer API
     const observerOptions = {
-        root: null,
-        rootMargin: '0px',
-        threshold: 0.2
+        root: null, // Use viewport as root
+        rootMargin: '0px', // No margin
+        threshold: 0.2 // Trigger when 20% of element is visible
     };
 
+    // Create observer that watches for elements becoming visible in viewport
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
-            if (entry.isIntersecting) {
+            if (entry.isIntersecting) { // Element is visible
                 entry.target.style.opacity = 1;
-                entry.target.style.transform = 'translateY(0)';
+                entry.target.style.transform = 'translateY(0)'; // Animate in by changing opacity and position
             }
         });
     }, observerOptions);
 
-    // Apply initial transform to timeline items
+    // Apply initial transform to timeline items (start offscreen and invisible)
     timelineItems.forEach(item => {
         item.style.opacity = 0;
         item.style.transform = 'translateY(50px)';
-        item.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        item.style.transition = 'opacity 0.6s ease, transform 0.6s ease'; // CSS transition for smooth animation
 
-        // Observe each timeline item
-        observer.observe(item);
+        observer.observe(item); // Start observing each timeline item
     });
 });
